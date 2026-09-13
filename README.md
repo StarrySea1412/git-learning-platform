@@ -1,7 +1,9 @@
 # Git Learning Platform 🚀
 
-[![CI](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml)
-[![Deploy](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/deploy.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/deploy.yml)
+![banner](assets/banner.png)
+
+[![CI](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml)
+[![Deploy](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml)
 
 一个交互式的Git学习平台，通过动画演示和实战练习帮助用户更直观地理解Git版本控制的概念和操作。
 
