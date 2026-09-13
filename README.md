@@ -7,6 +7,12 @@
 
 > 中文 | [English](README.en.md)
 
+## 📸 界面截图
+
+| 首页 | 教程列表 | 实战练习 |
+|------|---------|---------|
+| ![首页](assets/screenshots/01-home.png) | ![教程](assets/screenshots/02-tutorials.png) | ![实战](assets/screenshots/03-practice.png) |
+
 ## ✨ 特性
 
 - 📚 **结构化教程** - 从入门到进阶的完整Git教程，包括分支管理与多人协作（Fork、Pull Request、代码审查）
