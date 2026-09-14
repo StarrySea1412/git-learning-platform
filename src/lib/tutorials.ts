@@ -265,6 +265,234 @@ git log --oneline -- src/app/page.tsx`,
     ]
   },
   {
+    id: 'git-hosting-platforms',
+    title: '托管平台科普：GitHub 与 Gitee',
+    description: '搞懂代码托管平台是什么，GitHub 与 Gitee 各自的定位，以及如何选择和连接远程仓库',
+    category: 'basics',
+    difficulty: '入门',
+    duration: '12分钟',
+    content: [
+      {
+        title: '什么是代码托管平台？',
+        content: '先分清两个概念：Git 是运行在你电脑上的版本控制工具；代码托管平台（如 GitHub、Gitee、GitLab）则是把远程仓库放到云上、并在此基础上提供协作服务的网站。\n\n托管平台的核心职责是提供一个"官方仓库"：团队把它当作同步中心，大家 push 和 pull 都指向它。在这之上，平台还附赠了一整套协作能力——Issue（问题跟踪）、Pull Request（PR，提交代码审查与合并的申请）、Code Review（代码审查）、CI/CD（自动测试与部署）、Wiki 文档等。\n\n所以本课程"远程仓库操作"一课里配置的 origin，指向的就是托管平台上的一个仓库。Git 负责本地版本管理，平台负责共享与协作，两者各司其职。',
+        codeExample: `# 本地仓库关联到托管平台上的远程仓库
+git remote add origin https://github.com/user/repo.git
+
+# 平台的角色示意:
+#   你 --git push-->  [托管平台上的远程仓库]  <--git pull-- 队友
+#                     (官方仓库 + Issue/PR/CI 等协作服务)`,
+        tips: ['Git 完全可以脱离平台单独使用，平台解决的是"多人如何共享"的问题', 'GitHub、Gitee、GitLab 都只托管 Git 仓库，用哪个平台 Git 命令都一样']
+      },
+      {
+        title: 'GitHub：全球最大的开源社区',
+        content: 'GitHub 于 2008 年上线，2018 年被微软收购，目前是全球最大的代码托管平台，托管着上亿个仓库，几乎所有知名开源项目（Linux、React、VS Code）都在这里。\n\nGitHub 的意义早已超出"存代码"：它是开源世界的事实社区——发现项目、提交 Issue、贡献代码（Fork + Pull Request 流程）都在这里完成。它还提供了 GitHub Actions（自动化流水线）、Pages（免费静态网站托管）、 Discussions（社区讨论）等生态服务。\n\n对个人开发者来说，GitHub 个人主页就是一份公开的简历：绿色的贡献热力图、参与过的仓库、写过的开源项目，都是可以展示的经历。求职时很多面试官会真的点进去看。',
+        codeExample: `# 典型的 GitHub 开源协作流程
+# 1. 在网页上点 Fork，把别人的仓库复制一份到自己账号下
+git clone https://github.com/你的用户名/repo.git
+cd repo
+
+# 2. 开分支、改代码、提交
+git switch -c fix-typo
+git commit -am "docs: fix typo in README"
+
+# 3. 推回自己账号下的仓库，然后在网页上发起 Pull Request
+git push -u origin fix-typo`,
+        tips: ['Fork 是"复制到我账号"，clone 是"下载到我电脑"，两步缺一不可', '免费账号可以创建无限公开仓库和大量私有仓库，个人学习完全够用']
+      },
+      {
+        title: 'Gitee（码云）：国内主流托管平台',
+        content: 'Gitee（码云）是开源中国团队在 2013 年推出的代码托管平台，可以理解为"国内的 GitHub"。它最大的优势是服务器在国内：clone、push 速度快且稳定，不用考虑网络波动，很多国内团队和企业会选择它。\n\nGitee 提供免费的私有仓库、企业版协作功能，还有面向国产开源项目的 GVP 计划。在国内企业内网环境、信创合规要求较高的场景下，Gitee（或自建 GitLab）非常常见。它同样支持 Issue、Pull Request、CI 等主流协作能力，Git 工作流和 GitHub 完全一致。\n\n实用玩法是"双平台托管"：同一仓库同时推送到 GitHub 和 Gitee——开源展示用 GitHub，国内 CI 与快速访问用 Gitee，互不冲突。',
+        codeExample: `# 在 Gitee 上新建仓库后，推送到 Gitee
+git remote add gitee https://gitee.com/user/repo.git
+git push -u gitee main
+
+# 双平台托管：一个仓库推两个远程
+git remote add origin https://github.com/user/repo.git
+git remote add gitee  https://gitee.com/user/repo.git
+git push origin main
+git push gitee main
+
+# 查看已配置的所有远程
+git remote -v`,
+        tips: ['远程名 origin 只是习惯叫法，一个仓库可以有多个远程（origin、gitee、upstream……）', 'Gitee 上也有大量中文文档友好的国产开源项目，找资料别只盯着 GitHub']
+      },
+      {
+        title: '怎么选？怎么连？',
+        content: '选择的简单法则：以开源和国际化协作为主 → GitHub；国内团队协作、追求访问速度和合规 → Gitee；企业内部自建 → GitLab 或 Gitee 企业版。对学习者而言，两边都注册一个账号、各推一个仓库练手，是最划算的做法。\n\n连接平台有两种方式：HTTPS 和 SSH。HTTPS 地址用起来直观，推送时需要输入账号凭证（现在平台普遍要求用 Personal Access Token 代替密码）。SSH 则是在本机生成一对密钥，把公钥上传到平台，之后推送免密且更安全，长期使用推荐 SSH。',
+        codeExample: `# 1. 生成 SSH 密钥对（一路回车即可）
+ssh-keygen -t ed25519 -C "your.email@example.com"
+
+# 2. 复制公钥内容，粘贴到平台的 Settings -> SSH keys
+cat ~/.ssh/id_ed25519.pub
+
+# 3. 测试与 GitHub / Gitee 的 SSH 连通性
+ssh -T git@github.com
+# Hi xxx! You've successfully authenticated.
+ssh -T git@gitee.com
+# Hi xxx! You've successfully authenticated.
+
+# 4. 之后克隆改用 SSH 地址即可
+git clone git@github.com:user/repo.git`,
+        tips: ['私钥（无 .pub 后缀的那个文件）永远不要发给任何人', 'HTTPS 推送要求输入 Token 时，去平台的 Developer settings 里生成']
+      }
+    ]
+  },
+  {
+    id: 'git-gitlab-bitbucket',
+    title: '更多托管选择：GitLab、Bitbucket 与私有部署',
+    description: '认识 GitLab、Bitbucket 与自建方案的定位差异，学会在平台之间迁移仓库并做出团队选型',
+    category: 'basics',
+    difficulty: '入门',
+    duration: '10分钟',
+    content: [
+      {
+        title: 'GitLab：内置 CI/CD 的全家桶',
+        content: 'GitLab 于 2011 年上线，最大的特点是"平台本身就是开源的"，并且把 CI/CD（持续集成/持续部署）直接内置在平台里——不用像 GitHub 那样外挂 Actions，一个 .gitlab-ci.yml 文件就能跑自动测试和部署。\n\n很多公司的选择是"自建 GitLab"：把社区版（GitLab CE）部署到公司内网服务器，代码不出内网，权限、审查、流水线一样不少。它是国内企业内部最常见的自建方案。\n\n一个容易混淆的术语：GitLab 上发起代码合并申请叫 Merge Request（MR），GitHub 上叫 Pull Request（PR），本质是同一件事，只是叫法不同。',
+        codeExample: `# GitLab 的 CI 配置示例（放仓库根目录 .gitlab-ci.yml）
+stages:
+  - test
+  - build
+
+run-tests:
+  stage: test
+  script:
+    - npm install
+    - npm test
+
+build-site:
+  stage: build
+  script:
+    - npm run build
+
+# 每次推送后，GitLab 会自动按这个流水线执行`,
+        tips: ['GitLab CE 社区版免费自建，EE 企业版按人头收费', '入职公司看到"内网 GitLab"很正常，用你学过的 Git 命令操作即可']
+      },
+      {
+        title: 'Bitbucket：与 Jira 共生的选择',
+        content: 'Bitbucket 是 Atlassian 公司（Jira、Confluence 的东家）旗下的托管平台，最大的卖点是与自家工具链深度整合：提交信息里写上 Jira 单号，任务看板就自动关联提交记录；产品经理在 Jira 排期，开发在 Bitbucket 提代码，流程无缝衔接。\n\n它的市场主要在使用 Atlassian 全家桶的企业团队，个人开发者接触较少。它自带的 CI 叫 Bitbucket Pipelines，配置思路与 GitLab CI 类似。对学习者来说，知道"团队用什么平台就适应什么平台"即可——所有平台的 Git 操作完全相同，差异只在网页上的按钮位置。',
+        codeExample: `# Bitbucket 工作流与其他平台没有本质区别
+git remote add origin git@bitbucket.org:team/repo.git
+git push -u origin main
+
+# 在提交信息里关联 Jira 任务单
+git commit -m "PROJ-123 fix: 修复导出乱码"
+# 提交会自动出现在 Jira 的 PROJ-123 卡片下`,
+        tips: ['所有托管平台的 Git 命令一模一样，换平台只是换网址', '团队选型往往由已有工具链决定，而不是平台本身优劣']
+      },
+      {
+        title: '私有部署：把仓库搬进内网',
+        content: '当代码涉及商业机密或合规要求（金融、政企、游戏未公开项目），团队不会把仓库放在公网平台上，而是"私有部署"到自己的服务器。常见方案按重量排序：\n\nGitLab CE：功能最全，CI/CD 内置，但吃内存（建议 4GB 起步），适合中大型团队。\n\nGitea：Go 语言写的轻量自建 Git 服务，一个二进制文件加一个数据库就能跑，个人和小团队的性价比之选。社区分支 Forgejo（开源平台 Codeberg 的底层）也出于同一血统，理念相同：够用就好。\n\nGerrit：谷歌出品的"代码审查优先"系统，每个提交都要经过审查打分才能合入，Android、Chromium 等超大型项目用它管理几千人的提交洪流。',
+        codeExample: `# 用 Docker 一分钟跑起一个 Gitea 私有 Git 服务
+docker run -d --name gitea -p 3000:3000 \
+  -v gitea-data:/data gitea/gitea:latest
+
+# 浏览器打开 http://localhost:3000 完成初始化
+# 之后创建仓库、添加远程，和 GitHub 上完全一样:
+git remote add mygit http://localhost:3000/user/repo.git
+git push -u mygit main`,
+        tips: ['私有部署也有代价：备份、升级、安全都要自己负责', '个人学习用不到 Gerrit，但面试聊到大规模协作时它是好素材']
+      },
+      {
+        title: '平台迁移与选型总结',
+        content: '托管平台虽然各有功能，但底层的仓库都是普通 Git 仓库，所以迁移的核心只有两步：mirror 克隆、mirror 推送——把"含全部分支和标签"的仓库原样复制过去。历史、分支、标签一个不丢。\n\n选型总结：开源与个人作品集 → GitHub；国内速度与合规 → Gitee；企业内网全功能 → 自建 GitLab；轻量自建 → Gitea；深度 Jira 团队 → Bitbucket；超大规模审查流程 → Gerrit。记住结论：平台可以随时换，Git 技能是通用的，这也是先学透 Git 再关心平台的原因。',
+        codeExample: `# 把仓库完整迁移到另一个平台（保留全部分支与标签）
+git clone --mirror https://github.com/user/repo.git
+cd repo.git
+
+git remote set-url --push origin https://gitee.com/user/repo.git
+git push --mirror
+
+# 迁移后旧仓库可以设置成只读或归档，避免双写`,
+        tips: ['--mirror 和普通 clone 不同：它同步所有 refs，专司备份与迁移', '先 commit 后 push 的能力在任何平台都成立——平台换了，肌肉记忆不用换']
+      }
+    ]
+  },
+  {
+    id: 'git-and-svn',
+    title: 'SVN 科普：中心化版本控制',
+    description: '认识经典版本控制系统 SVN，理解中心化与分布式的本质区别，掌握常用命令对照与迁移思路',
+    category: 'basics',
+    difficulty: '入门',
+    duration: '12分钟',
+    content: [
+      {
+        title: 'SVN 是什么？',
+        content: 'SVN（Apache Subversion）是一个开源的版本控制系统，2000 年由 CollabNet 启动开发，目标是在当时流行的 CVS 基础上做一个"更好的版本控制"。在 Git 诞生（2005 年）之前，SVN 是开源世界最主流的选择，今天依然大量存在于企业老项目和某些特定行业（如游戏美术、设计资源管理，它对大文件和目录级权限更友好）。\n\nSVN 是典型的中心化（集中式）版本控制系统：所有版本历史只存在一台中央服务器上。开发者的日常循环是 svn checkout 检出最新版本 → 本地修改 → svn update 拉取他人更新 → svn commit 提交回服务器。本机上没有完整历史，几乎所有操作都依赖与服务器连接。',
+        codeExample: `# SVN 的典型工作循环
+svn checkout https://svn.example.com/repo/trunk  # 首次检出工作副本
+cd trunk
+
+# ... 修改文件 ...
+
+svn status        # 查看改动（对应 git status）
+svn update        # 合入别人提交到服务器的新版本（对应 git pull）
+svn commit -m "fix: 修复登录页溢出"   # 直接提交到中央服务器`,
+        tips: ['SVN 没有"本地仓库"概念，commit 会直接写进中央服务器', '入职老项目时先 svn --version 确认工具，客户端常用 TortoiseSVN（图形界面）']
+      },
+      {
+        title: '中心化 vs 分布式：本质区别',
+        content: 'Git 和 SVN 最重要的分野在于"历史存在哪里"：\n\n版本编号：SVN 用全局递增的版本号（r123 表示第 123 次提交），全仓库一个计数器；Git 没有连续编号，每个提交用内容算出的 SHA 哈希标识。\n\n离线能力：SVN 提交历史在服务器上，断网只能改文件不能提交、不能查历史；Git 本地就是完整仓库，提交、分支、回退、看日志全部离线可用，只有同步才需要网络。\n\n分支模型：SVN 的分支只是目录复制（svn copy trunk branches/xxx），笨重但概念简单；Git 的分支是指向提交的可移动指针，创建切换都是毫秒级，这直接催生了"功能分支工作流"这类现代协作方式。\n\n一句话总结：SVN 把"权威"放在服务器，Git 把完整权威复制到每个人手里，再靠约定（推送到共享远程）达成一致。',
+        codeExample: `# 结构对比（示意）:
+#
+# SVN（中心化）: 历史只在这里
+#   [中央服务器: r1-r123] --checkout/update/commit--> 开发者（只有最新版）
+#
+# Git（分布式）: 历史人手一份
+#   [GitHub 远程] <--push/pull--> 开发者A（完整历史）
+#          ^------push/pull------> 开发者B（完整历史）`,
+        tips: ['在 Git 里没有"r123"这种编号，沟通时用哈希前 7 位或分支名', '中心化不等于落后——需求简单、权限管控严格的团队用 SVN 反而省心']
+      },
+      {
+        title: '常用命令对照表',
+        content: '会 Git 的人学 SVN 很快，因为概念一一对应，只是"提交"这一步语义不同：SVN 的 commit 是直接进中央历史；Git 的 commit 只进本地历史，还需要 push 才同步到远程。\n\n工作中最常用的几组对照：checkout / clone（获取项目）、update / pull（拉取更新）、commit / commit + push（提交）、status / status、log / log、revert / restore（丢弃本地未提交改动）。注意 SVN 的 revert 是"撤销我未提交的修改"，和 Git 的 git revert（生成反向提交）含义完全不同，迁移时最容易踩坑。',
+        codeExample: `# SVN 命令  ->  Git 对应命令
+svn checkout URL        ->  git clone URL
+svn update              ->  git pull
+svn add file            ->  git add file
+svn commit -m "msg"     ->  git commit -m "msg" && git push
+svn status              ->  git status
+svn log                 ->  git log --oneline
+svn diff                ->  git diff
+svn revert file         ->  git restore file
+svn revert -R .         ->  git restore . （丢弃全部本地未提交修改）
+svn copy ^/trunk ^/branches/feature  ->  git switch -c feature`,
+        tips: ['svn revert ≠ git revert：前者丢工作区改动，后者追加一条反向提交', 'SVN 提交前必须先 update 再 commit，Git 的 push 被拒时同理（先 pull 再 push）']
+      },
+      {
+        title: '版本控制全家福：CVS、Mercurial、Perforce',
+        content: 'SVN 并不是 Git 之外唯一的版本控制系统，快速认识另外三位常客，面试和接手老项目时都用得上：\n\nCVS（1990 年）：SVN 的前辈，比 SVN 更古老，缺点很多（无法原子提交、重命名文件很痛苦），如今基本只存在于"祖传系统"里。SVN 的诞生动机就是取代它。\n\nMercurial（hg，2005 年）：与 Git 同年诞生的分布式版本控制，设计哲学是"简单易用"，命令比 Git 友好（hg pull / hg push / hg commit）。Python 项目曾长期用它，后因 GitHub 生态虹吸效应转投 Git。命令是 hg，水星的元素符号。\n\nPerforce（P4）：商业的中心化系统，专为超大仓库和二进制资产设计，游戏行业（尤其 3A 工作室）的事实标准——几十 GB 的美术资源库只有它能扛住。\n\n共同规律：新系统几乎都是分布式的，中心化系统退守到大文件和企业管控场景。Git 的生态位已经从"版本工具"扩展成了"协作基础设施"，这也是它赢得战争的根本原因。',
+        codeExample: `# 版本控制系统时间线:
+# 1990  CVS         首个广泛使用的开源 VCS
+# 2000  SVN         修复 CVS 的痛点，中心化巅峰
+# 2005  Git         Linus 为 Linux 内核而生（分布式）
+# 2005  Mercurial   同期的分布式竞品，hg 命令
+# ~2010 Perforce    商业系统，游戏大仓霸主
+#
+# 2020s: Git + 托管平台成为绝对主流，
+#        新项目选型几乎不再考虑其他系统`,
+        tips: ['接手老项目先 git --version 或 svn --version 或 hg --version 探明工具', '面试被问"Git 和 SVN 区别"时，答"分布式 vs 中心化 + 分支模型"就是满分框架']
+      },
+      {
+        title: '遇到 SVN 项目怎么办？',
+        content: '现实中你大概率会在维护老系统的团队里遇到 SVN。两种应对方式：\n\n并存使用：装上 SVN 客户端（命令行 svn 或图形界面的 TortoiseSVN），按上一节的对照表操作即可，学习成本很低。\n\n迁移到 Git：官方的 git-svn 桥接工具可以一边用 Git 命令、一边与 SVN 服务器同步，适合渐进式迁移；想整体搬迁时，GitHub/Gitee 都提供了 SVN 导入器，或者用 git svn clone 把整个历史（含提交人、时间）转成 Git 仓库后一次性推送上去。\n\n对学习者的建议是：把 Git 学扎实，SVN 需要时花一个下午熟悉对照表就够——版本控制的思想是相通的。',
+        codeExample: `# 用 git-svn 以 Git 命令操作 SVN 仓库
+git svn clone https://svn.example.com/repo/trunk -s
+
+# 日常循环: 本地照常 git commit
+git add . && git commit -m "feat: xxx"
+
+# 拉取 SVN 服务器上的新提交，再把自己的提交推回去
+git svn rebase
+git svn dcommit
+
+# 迁移完成后，把完整历史推上托管平台
+git remote add origin git@github.com:user/repo.git
+git push -u origin main`,
+        tips: ['git-svn 里的 rebase/dcommit 会改写历史，本地尽量保持线性提交', '接手 SVN 项目先问清楚分支/标签目录约定，每个团队的布局都可能不同']
+      }
+    ]
+  },
+  {
     id: 'git-branch',
     title: '分支管理',
     description: '学习如何创建、切换和合并分支',
