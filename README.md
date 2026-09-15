@@ -2,6 +2,8 @@
 
 ![banner](assets/banner.png)
 
+![技术栈全景图](assets/tech-stack.png)
+
 [![CI](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml)
 [![Deploy](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml)
 
