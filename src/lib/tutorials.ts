@@ -1540,6 +1540,60 @@ ls .git/rr-cache/`,
         tips: ['如果 rerere 的自动解决方案不对，重新解决后会更新记录', '可以将 .git/rr-cache/ 加入备份']
       }
     ]
+  },
+  {
+    id: 'git-amend',
+    title: '修改最近一次提交（amend）',
+    description: '提交完才发现漏了文件或写错了说明？用 amend 无痕迹地修补最近一次提交。',
+    category: 'advanced',
+    difficulty: '进阶',
+    duration: '12分钟',
+    relatedPracticeIds: ['soft-reset', 'rework-last-commit'],
+    content: [
+      {
+        title: '为什么需要 amend',
+        content: '刚敲下 git commit，你就后悔了：\n\n- "modified: src/app.ts" 被忘在了暂存区外面\n- 提交信息里"修复登录bug"打成了"修复登录bgu"\n\n这种"提交完 3 秒就后悔"的场景每天都在发生。新手常见的补救方式是再补一个提交——历史里于是堆满了 "fix typo"、"补上漏掉的文件" 这种噪音提交，污染整个项目历史。\n\ngit commit --amend 是更优雅的做法：它不会产生新提交，而是用新的内容替换掉最近一次提交，历史里就像那次失误从未发生过一样。\n\n和"git reset --soft HEAD~1 再重新提交"相比，amend 一步到位：如果只是补说明，连暂存区都不用碰。',
+        codeExample: `# 刚提交完，发现提交信息有错别字
+git commit -m "修复登录bgu"
+
+# 不必新建提交，直接"修补"刚才那一次
+git commit --amend -m "修复登录bug"`,
+        tips: ['amend 是"替换"而不是"追加"——历史里始终只有一次提交', '它和 reset --soft 是同一件事的两种做法，amend 少一步重新提交']
+      },
+      {
+        title: '两种典型用法',
+        content: '用法一：只改提交信息。不改任何文件，直接执行 git commit --amend -m "新信息"，最近一次提交的说明就被替换了。\n\n用法二：补上漏掉的文件。先把漏改的文件用 git add 放进暂存区，再执行 git commit --amend --no-edit。暂存区里的新改动会和原提交的内容合并，生成一个"更完整"的提交替换旧的。\n\n不加 -m 或 --no-edit 时会打开编辑器，让你顺便确认或修改提交信息。两种用法本质上是一回事：Git 用"原提交的父提交 + 暂存区当前内容 + 新说明"重新构造一个提交，挂在原来的位置。',
+        codeExample: `# 场景：commit 后才发现 config.js 忘了改
+git add config.js
+git commit --amend --no-edit   # 并入上次提交，沿用原信息
+
+# 只改说明，不动文件
+git commit --amend -m "feat: 支持微信扫码登录"`,
+        tips: ['--no-edit 是 amend 的黄金搭档：补文件时不弹编辑器', 'amend 后原提交的哈希会变——它已经是一个全新的提交了']
+      },
+      {
+        title: 'amend 的边界：只能动最后一个',
+        content: 'amend 有一个硬限制：它只能修改最近一次提交（HEAD 指向的那个）。\n\n想改更早的提交怎么办？这正是交互式 rebase 的用武之地：git rebase -i HEAD~3 会列出最近 3 次提交，把要改的那条标记为 edit，rebase 会在那个提交上暂停，你就可以用 amend 修改它，然后 git rebase --continue 让后面的提交依次重演。\n\n只想改说明、不动文件的话还有更轻的方式：在 rebase -i 列表里把 pick 改成 reword。',
+        codeExample: `# 修改倒数第 2 次提交
+git rebase -i HEAD~2
+# 编辑器里把目标行的 pick 改成 edit → 保存退出
+# rebase 停在该提交上：
+git commit --amend      # 修改它
+git rebase --continue   # 重演后续提交`,
+        tips: ['"改最近的"用 amend，"改更早的"用 rebase -i + amend', 'reword 适合批量修改多个提交信息']
+      },
+      {
+        title: '唯一的红线：别改已推送的提交',
+        content: 'amend 本质上是历史改写：旧提交被丢弃，取而代之的是一个新哈希的提交。\n\n如果旧提交已经 push 到远程、并且有人基于它继续开发，amend 之后 push 会被拒绝，你只能 git push --force-with-lease 强推——这会让协作者那边的旧提交"凭空消失"，拉取历史的人都要跟着遭殃。\n\n所以记住这条经验法则：amend 只用于尚未推送的提交。可以用 git log origin/main..HEAD 确认哪些提交还没推上去。已经推送了？那就老老实实再补一个正常提交——历史丑一点，远比协作翻车强。',
+        codeExample: `# 确认哪些提交还没推送到远程
+git log origin/main..HEAD --oneline
+# 列出来的提交都可以安全地 amend
+
+# 不得不改已推送提交时（仅限个人分支），用更安全的强推
+git push --force-with-lease`,
+        tips: ['--force-with-lease 比 --force 安全：远程有别人的新提交时会拒绝强推', '共享分支（main/develop）上永远不改写已推送的历史']
+      }
+    ]
   }
 ];
 

@@ -5,7 +5,6 @@
 ![技术栈全景图](assets/tech-stack.png)
 
 [![CI](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml)
-[![Deploy](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/deploy.yml)
 
 一个交互式的Git学习平台，通过动画演示和实战练习帮助用户更直观地理解Git版本控制的概念和操作。
 
@@ -46,7 +45,7 @@
 
 ```bash
 # 从 GitHub 克隆
-git clone https://github.com/StarrySea1412/git-learning-platform-.git git-learning-platform
+git clone https://github.com/StarrySea1412/git-learning-platform.git git-learning-platform
 
 # 或从 Gitee 克隆（国内访问更快）
 git clone https://gitee.com/starry-sea-1412/git-learning-platform.git git-learning-platform
@@ -70,8 +69,7 @@ git-learning-platform/
 ├── src/
 │   ├── app/              # Next.js App Router页面
 │   ├── components/       # React组件
-│   ├── lib/              # 工具函数和数据
-│   └── types/            # TypeScript类型定义
+│   └── lib/              # 工具函数和数据
 ├── packages/
 │   └── git-simulator/    # 独立 npm 包：零依赖 Git 模拟器核心
 ├── public/               # 静态资源
@@ -97,7 +95,7 @@ npm install git-simulator-core
 2. 在 [vercel.com/new](https://vercel.com/new) 导入你的 Fork
 3. 直接部署，零配置
 
-仓库内置 GitHub Actions 自动部署流水线（`.github/workflows/deploy.yml`）。如需走自己的 CI 部署，在仓库 Settings → Secrets 添加 `VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID` 三个密钥（从 Vercel 项目设置获取），之后每次推送到 main 会自动部署。
+Fork 导入 Vercel 后，每次推送到 main 都会自动部署。如需用自己的 CI 执行部署，可以参考 `.github/workflows/ci.yml` 的写法扩展一个部署 Job，并在仓库 Settings → Secrets 添加 `VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID` 三个密钥（从 Vercel 项目设置获取）。
 
 ## 🤝 贡献
 

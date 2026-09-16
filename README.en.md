@@ -1,7 +1,6 @@
 # Git Learning Platform 🚀
 
-[![CI](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml)
-[![Deploy](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/deploy.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/deploy.yml)
+[![CI](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml)
 
 An interactive Git learning platform — understand how Git actually works through visual animations and hands-on practice in a simulated terminal.
 
@@ -10,7 +9,7 @@ An interactive Git learning platform — understand how Git actually works throu
 ## ✨ Features
 
 - 📚 **Structured tutorials** — Complete Git curriculum from basics to advanced, including branching and team collaboration (Fork, Pull Request, code review)
-- 🎮 **Interactive practice** — 30 hands-on exercises in a simulated terminal backed by a real remote-repository model: clone, push feature branches, sync with teammates, recover from rejected pushes
+- 🎮 **Interactive practice** — 38 hands-on exercises in a simulated terminal backed by a real remote-repository model: clone, push feature branches, sync with teammates, recover from rejected pushes
 - 🥊 **Merge conflict simulation** — Experience conflict markers, weigh both sides, and resolve for real — a lesson most interactive tutorials skip
 - 👥 **Virtual teammate** — Mid-exercise, your teammate "suddenly" pushes to origin/main, training the fetch-before-push reflex
 - 🎬 **Visual animations** — Git workflow animations including a remote-collaboration scenario walking through the fetch → pull → push loop
@@ -44,7 +43,7 @@ Most interactive Git tutorials stop at branching. This platform goes further:
 
 ```bash
 # Clone from GitHub
-git clone https://github.com/StarrySea1412/git-learning-platform-.git git-learning-platform
+git clone https://github.com/StarrySea1412/git-learning-platform.git git-learning-platform
 
 # Or from Gitee (faster in mainland China)
 git clone https://gitee.com/starry-sea-1412/git-learning-platform.git git-learning-platform
@@ -64,8 +63,7 @@ git-learning-platform/
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   ├── components/       # React components
-│   ├── lib/              # Utilities and content data
-│   └── types/            # TypeScript types
+│   └── lib/              # Utilities and content data
 ├── packages/
 │   └── git-simulator/    # Standalone npm package: zero-dependency Git simulator core
 ├── public/               # Static assets
@@ -90,7 +88,7 @@ One-click deploy to [Vercel](https://vercel.com) (free):
 2. Import your fork at [vercel.com/new](https://vercel.com/new)
 3. Deploy with zero configuration
 
-A GitHub Actions deploy pipeline is included (`.github/workflows/deploy.yml`). To deploy from your own CI, add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` under Settings → Secrets; every push to main then deploys automatically.
+Once your fork is imported into Vercel, every push to main deploys automatically. To run deployment from your own CI, extend a deploy job following `.github/workflows/ci.yml` and add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` under Settings → Secrets.
 
 ## 🤝 Contributing
 

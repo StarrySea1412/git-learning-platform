@@ -1749,7 +1749,7 @@ export const practiceTasks: PracticeTask[] = [
   {
     id: 'bisect-intro',
     mode: 'conceptual',
-    title: '用二分法定位问题提交',
+    title: '理解二分查找的定位思路',
     description: '理解 git bisect 如何把排查范围从全部历史缩小到单个提交。',
     difficulty: '高级',
     topic: '扩展概念',
