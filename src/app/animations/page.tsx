@@ -37,6 +37,9 @@ const animationComponents = {
   bisect: dynamic(() => import('@/components/animations/BisectAnimation'), {
     loading: () => <Skeleton />,
   }),
+  tag: dynamic(() => import('@/components/animations/TagAnimation'), {
+    loading: () => <Skeleton />,
+  }),
   workflow: dynamic(() => import('@/components/animations/WorkflowAnimation'), {
     loading: () => <Skeleton />,
   }),

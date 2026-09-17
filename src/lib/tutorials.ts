@@ -1594,6 +1594,71 @@ git push --force-with-lease`,
         tips: ['--force-with-lease 比 --force 安全：远程有别人的新提交时会拒绝强推', '共享分支（main/develop）上永远不改写已推送的历史']
       }
     ]
+  },
+  {
+    id: 'git-hooks',
+    title: 'Git hooks：让检查自动执行',
+    description: '提交前自动跑 lint、推送前自动跑测试——认识 Git 的生命周期钩子机制。',
+    category: 'advanced',
+    difficulty: '进阶',
+    duration: '12分钟',
+    content: [
+      {
+        title: 'Git hooks 是什么',
+        content: 'Git 在每个关键操作节点都预留了"自动执行"的挂载点：提交前、提交信息写好后、推送前、合并后……这些挂载点就是钩子（hooks）。每个仓库的 .git/hooks/ 目录下都躺着一批钩子脚本，git init 时 Git 会放入官方示例，全部以 .sample 结尾——把后缀去掉、给文件加上可执行权限，钩子就生效了。\n\n钩子的本质很朴素：Git 在特定时机执行你的脚本，脚本以非零状态码退出就中止这次操作。也就是说，钩子是"用退出码说话"的门卫：放行还是拦下，全看脚本最后一行的返回值。\n\n它解决的是"靠人记住"的问题：lint 没跑、提交信息乱写、测试挂了还硬推——这些纪律靠自觉总有失守的一天，钩子把它们变成流程的一部分。',
+        codeExample: `# 查看当前仓库的钩子目录
+ls .git/hooks/
+# 全是 *.sample 示例，去掉后缀即可启用
+
+# 启用最简单的 pre-commit 钩子
+echo "echo 提交前检查通过" > .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+git commit -m "test hook"   # 会先执行脚本，再完成提交`,
+        tips: ['钩子是本地机制：只对当前仓库生效，git clone 不会把它带过去', '脚本以非零退出码结束时，Git 会中止对应的操作']
+      },
+      {
+        title: '最常用的四个钩子',
+        content: 'pre-commit：提交前执行，最常用的钩子。跑 lint、格式化检查、单元测试，检查不过提交就中止——把"代码质量门禁"钉在提交这一步。\n\ncommit-msg：提交信息写好后执行，Git 会把信息文件的路径作为参数传给脚本。用来校验提交信息格式，比如强制 Conventional Commits 风格（feat:/fix:/docs: 开头）。\n\npre-push：git push 前执行，最后一道关卡。适合放耗时较长的完整测试——本地提交很快，别让慢检查拖住每一次提交，放到推送前更合理。\n\npost-merge：合并或 pull 之后执行。典型用法是自动 npm install，避免"拉了代码忘了装依赖"导致的低级报错。',
+        codeExample: `# pre-commit：检查暂存区里的 JS 文件
+cat > .git/hooks/pre-commit <<'EOF'
+#!/bin/sh
+npx eslint $(git diff --cached --name-only --diff-filter=ACM | grep '\\.js$')
+EOF
+
+# commit-msg：强制 feat:/fix: 前缀
+cat > .git/hooks/commit-msg <<'EOF'
+#!/bin/sh
+grep -qE '^(feat|fix|docs|chore|refactor|test)' "$1" || {
+  echo "提交信息需以 feat:/fix: 等前缀开头"; exit 1; }
+EOF`,
+        tips: ['快检查放 pre-commit，慢测试放 pre-push，别让每次提交都卡几十秒', 'commit-msg 收到的参数是信息文件路径，不是信息本身']
+      },
+      {
+        title: '让钩子随仓库共享',
+        content: '钩子有个尴尬的默认设定：.git/ 目录本身不进版本库，克隆下来的仓库 hooks 目录里只有示例文件。你精心调好的钩子，队友 clone 下来一个都没有——"在我机器上能拦住，在他机器上畅通无阻"。\n\n解决办法是 Git 官方提供的 core.hooksPath 配置：把钩子放进仓库里的普通目录（如 .githooks/），再让 Git 到那里找钩子。这个目录会随仓库正常克隆，队友执行一次配置命令就能全队生效。\n\n前端项目更常见的是用 husky 封装同样的机制，再配合 lint-staged 只检查暂存区里的文件——husky 负责安装钩子，lint-staged 负责让检查又快又准。',
+        codeExample: `# 钩子放进仓库内目录，随版本库共享
+mkdir .githooks
+git config core.hooksPath .githooks
+# 队友 clone 后执行一次同样的 config 即可
+
+# JS 项目的现代方案
+npm install --save-dev husky lint-staged
+npx husky init        # 初始化 .husky/ 目录
+# package.json 里配置 lint-staged: { "*.js": "eslint --fix" }`,
+        tips: ['core.hooksPath 是官方机制，任何语言的项目都能用', 'husky + lint-staged 是 JS 生态的事实标准组合']
+      },
+      {
+        title: '边界与误区',
+        content: '钩子可以被绕过：git commit --no-verify 会跳过 pre-commit 和 commit-msg，git push --no-verify 跳过 pre-push。这是刻意设计——钩子是流程保障，不是安全边界。紧急热修需要绕过检查时它很有用，但也意味着：真正拦住坏代码的是 code review 和 CI，钩子只是把大部分问题挡在了更早、成本更低的阶段。\n\n钩子没生效时按这个顺序排查：文件后缀是不是还带着 .sample、有没有可执行权限（chmod +x）、core.hooksPath 有没有指到别的目录。三个都确认过还不生效，再检查脚本本身有没有语法错误。',
+        codeExample: `# 紧急情况下绕过钩子（仅限个人分支）
+git commit --no-verify -m "fix: 紧急热修"
+
+# 钩子没生效的排查顺序
+ls -l .githooks/           # 有没有 .sample 后缀、x 权限
+git config core.hooksPath  # 有没有被指走`,
+        tips: ['钩子挡住的是"大多数问题"，真正的质量保障是 review 和 CI', '--no-verify 是逃生门，不是常规操作']
+      }
+    ]
   }
 ];
 

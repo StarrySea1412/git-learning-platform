@@ -7,6 +7,7 @@ export type AnimationId =
   | 'reset'
   | 'stash'
   | 'bisect'
+  | 'tag'
   | 'workflow'
   | 'conflict'
   | 'collaboration';
@@ -134,6 +135,19 @@ export const animationScenes: Record<AnimationId, AnimationScene> = {
     pitfall: '没有先确定一个明确的 good / bad 边界，就很难让 bisect 给出稳定结果。',
     relatedPracticeIds: ['bisect-intro'],
   },
+  tag: {
+    id: 'tag',
+    title: '给发布提交钉上版本标签',
+    summary: '看懂 tag 和 branch 的区别：分支会随提交移动，标签钉住不动。',
+    scenario: 'hotfix 提交已经合入 main，发布前要给当前提交打上 v1.0.0 标签，结果版本号打错，需要安全删除重打。',
+    keyCommands: ['git tag v1.0.0', 'git tag -d v1.0.0', 'git tag v1.1.0', 'git push origin v1.1.0'],
+    focusPoints: [
+      '标签是指向某个提交的固定指针；分支会随新提交前移，标签钉住不动。',
+      'git push 不会自动上传标签，发版时要单独 git push origin <tag>。',
+    ],
+    pitfall: '版本号打错就直接强推覆盖远程标签；正确做法是先 git tag -d 删掉重打再推送，覆盖远端标签前要三思。',
+    relatedPracticeIds: ['tag-release'],
+  },
   workflow: {
     id: 'workflow',
     title: '完整走一遍功能分支工作流',
@@ -186,8 +200,8 @@ export const animationSections: AnimationSection[] = [
   {
     id: 'advanced',
     title: '进阶操作',
-    description: '进一步理解历史整理、提交搬运、任务切换和问题定位的动态图示。',
-    animationIds: ['rebase', 'cherry-pick', 'reset', 'stash', 'bisect'],
+    description: '进一步理解历史整理、提交搬运、任务切换、问题定位和发版打标的动态图示。',
+    animationIds: ['rebase', 'cherry-pick', 'reset', 'stash', 'bisect', 'tag'],
   },
   {
     id: 'scenarios',

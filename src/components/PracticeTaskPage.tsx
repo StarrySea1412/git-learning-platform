@@ -319,7 +319,7 @@ export default function PracticeTaskPage({ id }: PracticeTaskPageProps) {
                     <div className="mb-1 flex items-baseline justify-between text-xs text-gray-500 dark:text-gray-400">
                       <motion.span
                         key={stepPulse}
-                        initial={stepPulse > 0 ? { scale: 1.3, color: '#10b981' } : false}
+                        initial={stepPulse > 0 ? { scale: 1.3, color: '#10b981' } : undefined}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.4 }}
                         className="font-medium"
