@@ -27,7 +27,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">社区</h4>
             <ul className="space-y-2">
-              <li><a href="https://github.com/StarrySea1412/git-learning-platform-" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-500">GitHub</a></li>
+              <li><a href="https://github.com/StarrySea1412/git-learning-platform" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-500">GitHub</a></li>
               <li><a href="https://gitee.com/starry-sea-1412/git-learning-platform" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-500">Gitee</a></li>
             </ul>
           </div>

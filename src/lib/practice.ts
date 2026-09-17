@@ -1984,10 +1984,11 @@ export const practiceSections: PracticeSection[] = [
   {
     id: 'concept-advanced',
     title: '延伸概念',
-    description: 'worktree、交互式变基、bisect、submodule 均已可动手；仅 rerere/exec 还是概念题。',
+    description: 'worktree、交互式变基、submodule 均已可动手；bisect 有概念+实操两题；rerere/exec 还是概念题。',
     kind: 'concept',
     taskIds: [
       'rebase-i-cleanup',
+      'bisect-intro',
       'bisect-hunt',
       'add-submodule',
       'init-submodules',

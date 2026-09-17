@@ -165,7 +165,7 @@ export default function ShareCard() {
             Git Learning Platform · 交互式 Git 学习
           </text>
           <text x="1000" y="1005" fill="#6b7280" fontSize="22" textAnchor="end" fontFamily="sans-serif">
-            github.com/StarrySea1412/git-learning-platform-
+            github.com/StarrySea1412/git-learning-platform
           </text>
         </svg>
       </div>

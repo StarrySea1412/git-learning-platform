@@ -15,7 +15,7 @@
   "author": "StarrySea1412",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StarrySea1412/git-learning-platform-.git",
+    "url": "git+https://github.com/StarrySea1412/git-learning-platform.git",
     "directory": "packages/git-simulator"
   },
   "type": "module",

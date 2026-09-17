@@ -1,9 +1,9 @@
 # git-simulator-core
 
-[![CI](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform-/actions/workflows/ci.yml)
+[![CI](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/StarrySea1412/git-learning-platform/actions/workflows/ci.yml)
 
 零依赖的内存版 Git 模拟器——用纯 TypeScript 实现了一个"能跑命令的假仓库"。
-为 Git 教学工具、交互式沙盒和可视化项目而生，也是 [Git 学习平台](https://github.com/StarrySea1412/git-learning-platform-)的核心引擎。
+为 Git 教学工具、交互式沙盒和可视化项目而生，也是 [Git 学习平台](https://github.com/StarrySea1412/git-learning-platform)的核心引擎。
 
 ## 特性
 
@@ -95,7 +95,7 @@ resolve-conflict [ours|theirs|both]   ← 合并冲突解决（教学辅助命�
 
 ## 用途
 
-- **教学平台**：本包驱动着一个 30 题的交互式 Git 练习系统
+- **教学平台**：本包驱动着一个 38 题的交互式 Git 练习系统
 - **沙盒**：给用户一个"弄不坏的仓库"随便试命令
 - **可视化**：状态是纯数据，画提交图/分支图不需要 hook 进真实 Git
 - **测试**：需要 Git 仓库行为 fixture 的单元测试
